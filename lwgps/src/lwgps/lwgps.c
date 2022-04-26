@@ -298,7 +298,7 @@ prv_parse_term(lwgps_t* gh) {
                 break;
         }
 #endif /* LWGPS_CFG_STATEMENT_GPRMC */
-#if LWGPS_CFG_STATEMENT_GPRMC
+#if LWGPS_CFG_STATEMENT_GPGLL
     } else if (gh->p.stat == STAT_GLL) {        /* Process GPGLL statement */
         switch (gh->p.term_num) {
             case 2:                             /* Process valid status */
@@ -326,7 +326,7 @@ prv_parse_term(lwgps_t* gh) {
             default:
                 break;
         }
-#endif /* LWGPS_CFG_STATEMENT_GPRMC */
+#endif /* LWGPS_CFG_STATEMENT_GPGLL */
 #if LWGPS_CFG_STATEMENT_PUBX
     } else if (gh->p.stat == STAT_UBX) {        /* Disambiguate generic PUBX statement */
         if (gh->p.term_str[0] == '0' && gh->p.term_str[1] == '4') {

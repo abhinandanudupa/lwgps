@@ -38,7 +38,6 @@
 #include <stddef.h>
 #include <limits.h>
 #include "lwgps/lwgps_opt.h"
-#include <math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -79,7 +78,7 @@ typedef enum {
     STAT_GSA        = 2,                        /*!< GPGSA statement */
     STAT_GSV        = 3,                        /*!< GPGSV statement */
     STAT_RMC        = 4,                        /*!< GPRMC statement */
-    STAT_GLL        = 5,                        /*!< GPRMC statement */
+    STAT_GLL        = 5,                        /*!< GPGLL statement */
     STAT_UBX        = 6,                        /*!< UBX statement (uBlox specific) */
     STAT_UBX_TIME   = 7,                        /*!< UBX TIME statement (uBlox specific) */
     STAT_CHECKSUM_FAIL = UINT8_MAX              /*!< Special case, used when checksum fails */
