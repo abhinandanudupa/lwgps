@@ -154,6 +154,10 @@ prv_parse_term(lwgps_t* gh) {
         } else if (!strncmp(gh->p.term_str, "$PUBX", 5)) {
             gh->p.stat = STAT_UBX;
 #endif /* LWGPS_CFG_STATEMENT_PUBX */
+#if LWGPS_CFG_STATEMENT_GPGLL
+        } else if (!strncmp(gh->p.term_str, "$GPGLL", 6)) {
+            gh->p.stat = STAT_GLL;
+#endif /* LWGPS_CFG_STATEMENT_GPRMC */
         } else {
             gh->p.stat = STAT_UNKNOWN;          /* Invalid statement for library */
         }
@@ -275,6 +279,35 @@ prv_parse_term(lwgps_t* gh) {
                 gh->p.data.rmc.speed = prv_parse_float_number(gh, NULL);
                 break;
             case 8:                             /* Process true ground coarse */
+                gh->p.data.rmc.course = prv_parse_float_number(gh, NULL);
+                break;
+            case 9:                             /* Process date */
+                gh->p.data.rmc.date = (uint8_t)(10 * CTN(gh->p.term_str[0]) + CTN(gh->p.term_str[1]));
+                gh->p.data.rmc.month = (uint8_t)(10 * CTN(gh->p.term_str[2]) + CTN(gh->p.term_str[3]));
+                gh->p.data.rmc.year = (uint8_t)(10 * CTN(gh->p.term_str[4]) + CTN(gh->p.term_str[5]));
+                break;
+            case 10:                            /* Process magnetic variation */
+                gh->p.data.rmc.variation = prv_parse_float_number(gh, NULL);
+                break;
+            case 11:                            /* Process magnetic variation east/west */
+                if (gh->p.term_str[0] == 'W' || gh->p.term_str[0] == 'w') {
+                    gh->p.data.rmc.variation = -gh->p.data.rmc.variation;
+                }
+                break;
+            default:
+                break;
+        }
+#endif /* LWGPS_CFG_STATEMENT_GPRMC */
+#if LWGPS_CFG_STATEMENT_GPRMC
+    } else if (gh->p.stat == STAT_GLL) {        /* Process GPGLL statement */
+        switch (gh->p.term_num) {
+            case 2:                             /* Process valid status */
+                gh->p.data.rmc.is_valid = (gh->p.term_str[0] == 'A');
+                break;
+            case 7:                             /* Process latitude in degrees */
+                gh->p.data.rmc.speed = prv_parse_float_number(gh, NULL);
+                break;
+            case 8:                             /* Process longitude in degrees */
                 gh->p.data.rmc.course = prv_parse_float_number(gh, NULL);
                 break;
             case 9:                             /* Process date */

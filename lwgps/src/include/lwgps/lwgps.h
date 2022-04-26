@@ -38,6 +38,7 @@
 #include <stddef.h>
 #include <limits.h>
 #include "lwgps/lwgps_opt.h"
+#include <math.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -78,8 +79,9 @@ typedef enum {
     STAT_GSA        = 2,                        /*!< GPGSA statement */
     STAT_GSV        = 3,                        /*!< GPGSV statement */
     STAT_RMC        = 4,                        /*!< GPRMC statement */
-    STAT_UBX        = 5,                        /*!< UBX statement (uBlox specific) */
-    STAT_UBX_TIME   = 6,                        /*!< UBX TIME statement (uBlox specific) */
+    STAT_GLL        = 5,                        /*!< GPRMC statement */
+    STAT_UBX        = 6,                        /*!< UBX statement (uBlox specific) */
+    STAT_UBX_TIME   = 7,                        /*!< UBX TIME statement (uBlox specific) */
     STAT_CHECKSUM_FAIL = UINT8_MAX              /*!< Special case, used when checksum fails */
 } lwgps_statement_t;
 
@@ -126,6 +128,16 @@ typedef struct {
     uint8_t date;                               /*!< Fix date */
     uint8_t month;                              /*!< Fix month */
     uint8_t year;                               /*!< Fix year */
+#endif /* LWGPS_CFG_STATEMENT_GPRMC || __DOXYGEN__ */
+
+#if LWGPS_CFG_STATEMENT_GPGLL || __DOXYGEN__
+    /* Information related to GPGLL statement */
+    uint8_t is_valid;                           /*!< GPS valid status */
+    uint8_t hours;                              /*!< Hours in UTC */
+    uint8_t minutes;                            /*!< Minutes in UTC */
+    uint8_t seconds;                            /*!< Seconds in UTC */
+    lwgps_float_t latitude;                     /*!< Latitude in units of degrees */
+    lwgps_float_t longitude;                    /*!< Longitude in units of degrees */
 #endif /* LWGPS_CFG_STATEMENT_GPRMC || __DOXYGEN__ */
 
 #if LWGPS_CFG_STATEMENT_PUBX_TIME || __DOXYGEN__
@@ -203,6 +215,16 @@ typedef struct {
                 lwgps_float_t course;           /*!< Current course over ground */
                 lwgps_float_t variation;        /*!< Current magnetic variation in degrees */
             } rmc;                              /*!< GPRMC message */
+#endif /* LWGPS_CFG_STATEMENT_GPRMC */
+#if LWGPS_CFG_STATEMENT_GPGLL
+            struct {
+                uint8_t is_valid;               /*!< GPS valid status */
+                uint8_t hours;                  /*!< Hours in UTC */
+                uint8_t minutes;                /*!< Minutes in UTC */
+                uint8_t seconds;                /*!< Seconds in UTC */
+                lwgps_float_t latitude;         /*!< Latitude in units of degrees */
+                lwgps_float_t longitude;        /*!< Longitude in units of degrees */
+            } gll;                              /*!< GPRMC message */
 #endif /* LWGPS_CFG_STATEMENT_GPRMC */
 #if LWGPS_CFG_STATEMENT_PUBX_TIME
             struct {

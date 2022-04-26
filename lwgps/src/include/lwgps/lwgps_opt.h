@@ -142,17 +142,24 @@ extern "C" {
 
 /**
  * \brief           Enables `1` or disables `0` parsing and generation
- *                  of PUBX (uBlox) TIME messages.
+ *                  of PUBX (uBlox) messages
+ *
+ *                  PUBX are a nonstandard ublox-specific extensions,
+ *                  so disabled by default.
+ */
+#ifndef LWGPS_CFG_STATEMENT_GPGLL
+#define LWGPS_CFG_STATEMENT_GPGLL           0
+#endif
+
+/**
+ * \brief           Enables `1` or disables `0` parsing and generation
+ *                  of GLL messages.
  *
  * \note            TIME messages can be used to obtain:
- *                      - UTC time of week
- *                      - UTC week number
- *                      - Leap seconds (allows conversion to eg. TAI)
+ *                      - Latitude, longitude location
+ *                      - UTC time of location
  *
- *                  This is a nonstandard ublox-specific extension,
- *                  so disabled by default.
- *
- *                  This configure option requires LWGPS_CFG_STATEMENT_PUBX
+ *                  This configure option requires LWGPS_CFG_STATEMENT_GPGLL
  */
 #ifndef LWGPS_CFG_STATEMENT_PUBX_TIME
 #define LWGPS_CFG_STATEMENT_PUBX_TIME       0
