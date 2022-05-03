@@ -301,27 +301,26 @@ prv_parse_term(lwgps_t* gh) {
 #if LWGPS_CFG_STATEMENT_GPGLL
     } else if (gh->p.stat == STAT_GLL) {        /* Process GPGLL statement */
         switch (gh->p.term_num) {
-            case 2:                             /* Process valid status */
-                gh->p.data.rmc.is_valid = (gh->p.term_str[0] == 'A');
+            case 1:                             /* Latitude */
+                gh->p.data.gll.latitude = prv_parse_lat_long(gh);   /* Parse latitude */
                 break;
-            case 7:                             /* Process latitude in degrees */
-                gh->p.data.rmc.speed = prv_parse_float_number(gh, NULL);
-                break;
-            case 8:                             /* Process longitude in degrees */
-                gh->p.data.rmc.course = prv_parse_float_number(gh, NULL);
-                break;
-            case 9:                             /* Process date */
-                gh->p.data.rmc.date = (uint8_t)(10 * CTN(gh->p.term_str[0]) + CTN(gh->p.term_str[1]));
-                gh->p.data.rmc.month = (uint8_t)(10 * CTN(gh->p.term_str[2]) + CTN(gh->p.term_str[3]));
-                gh->p.data.rmc.year = (uint8_t)(10 * CTN(gh->p.term_str[4]) + CTN(gh->p.term_str[5]));
-                break;
-            case 10:                            /* Process magnetic variation */
-                gh->p.data.rmc.variation = prv_parse_float_number(gh, NULL);
-                break;
-            case 11:                            /* Process magnetic variation east/west */
-                if (gh->p.term_str[0] == 'W' || gh->p.term_str[0] == 'w') {
-                    gh->p.data.rmc.variation = -gh->p.data.rmc.variation;
+            case 2:                             /* Latitude north/south information */
+                if (gh->p.term_str[0] == 'S' || gh->p.term_str[0] == 's') {
+                    gh->p.data.gll.latitude = -gh->p.data.gll.latitude;
                 }
+                break;
+            case 3:                             /* Longitude */
+                gh->p.data.gll.longitude = prv_parse_lat_long(gh);  /* Parse longitude */
+                break;
+            case 4:                             /* Longitude east/west information */
+                if (gh->p.term_str[0] == 'W' || gh->p.term_str[0] == 'w') {
+                    gh->p.data.gll.longitude = -gh->p.data.gll.longitude;
+                }
+                break;
+            case 5:                             /* Process UTC time; ignore fractions of seconds */
+                gh->p.data.time.hours = 10 * CTN(gh->p.term_str[0]) + CTN(gh->p.term_str[1]);
+                gh->p.data.time.minutes = 10 * CTN(gh->p.term_str[2]) + CTN(gh->p.term_str[3]);
+                gh->p.data.time.seconds = 10 * CTN(gh->p.term_str[4]) + CTN(gh->p.term_str[5]);
                 break;
             default:
                 break;

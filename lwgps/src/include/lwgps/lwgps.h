@@ -218,12 +218,12 @@ typedef struct {
 #if LWGPS_CFG_STATEMENT_GPGLL
             struct {
                 uint8_t is_valid;               /*!< GPS valid status */
+                lwgps_float_t latitude;         /*!< Latitude in units of degrees */
+                lwgps_float_t longitude;        /*!< Longitude in units of degrees */
                 uint8_t hours;                  /*!< Hours in UTC */
                 uint8_t minutes;                /*!< Minutes in UTC */
                 uint8_t seconds;                /*!< Seconds in UTC */
-                lwgps_float_t latitude;         /*!< Latitude in units of degrees */
-                lwgps_float_t longitude;        /*!< Longitude in units of degrees */
-            } gll;                              /*!< GPRMC message */
+            } gll;                              /*!< GPGLL message */
 #endif /* LWGPS_CFG_STATEMENT_GPRMC */
 #if LWGPS_CFG_STATEMENT_PUBX_TIME
             struct {
