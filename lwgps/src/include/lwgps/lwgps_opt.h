@@ -80,7 +80,7 @@ extern "C" {
  *                      - Number of satellites in use, fix (no fix, GPS, DGPS), UTC time
  */
 #ifndef LWGPS_CFG_STATEMENT_GPGGA
-#define LWGPS_CFG_STATEMENT_GPGGA           1
+#define LWGPS_CFG_STATEMENT_GPGGA           0
 #endif
 
 /**
@@ -92,7 +92,7 @@ extern "C" {
  *                      - IDs of satellites in use
  */
 #ifndef LWGPS_CFG_STATEMENT_GPGSA
-#define LWGPS_CFG_STATEMENT_GPGSA           1
+#define LWGPS_CFG_STATEMENT_GPGSA           0
 #endif
 
 /**
@@ -105,7 +105,7 @@ extern "C" {
  *                      - UTC date
  */
 #ifndef LWGPS_CFG_STATEMENT_GPRMC
-#define LWGPS_CFG_STATEMENT_GPRMC           1
+#define LWGPS_CFG_STATEMENT_GPRMC           0
 #endif
 
 /**
@@ -165,6 +165,17 @@ extern "C" {
  */
 #ifndef LWGPS_CFG_CRC
 #define LWGPS_CFG_CRC                       1
+#endif
+/**
+ * \brief           Enables `1` or disables `0` `GLL` statement parsing.
+ *
+ * \note            This statement must be enabled to parse:
+ *                      - Validity of GPS signal
+ *                      - Latitude and longitude in degrees
+ *                      - UTC date
+ */
+#ifndef LWGPS_CFG_STATEMENT_GPGLL
+#define LWGPS_CFG_STATEMENT_GPGLL           1
 #endif
 
 /* Guard against accidental parser breakage */

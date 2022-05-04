@@ -157,7 +157,7 @@ prv_parse_term(lwgps_t* gh) {
 #if LWGPS_CFG_STATEMENT_GPGLL
         } else if (!strncmp(gh->p.term_str, "$GPGLL", 6)) {
             gh->p.stat = STAT_GLL;
-#endif /* LWGPS_CFG_STATEMENT_GPRMC */
+#endif /* LWGPS_CFG_STATEMENT_GPGLL */
         } else {
             gh->p.stat = STAT_UNKNOWN;          /* Invalid statement for library */
         }
@@ -318,10 +318,13 @@ prv_parse_term(lwgps_t* gh) {
                 }
                 break;
             case 5:                             /* Process UTC time; ignore fractions of seconds */
-                gh->p.data.time.hours = 10 * CTN(gh->p.term_str[0]) + CTN(gh->p.term_str[1]);
-                gh->p.data.time.minutes = 10 * CTN(gh->p.term_str[2]) + CTN(gh->p.term_str[3]);
-                gh->p.data.time.seconds = 10 * CTN(gh->p.term_str[4]) + CTN(gh->p.term_str[5]);
+                gh->p.data.gll.hours = 10 * CTN(gh->p.term_str[0]) + CTN(gh->p.term_str[1]);
+                gh->p.data.gll.minutes = 10 * CTN(gh->p.term_str[2]) + CTN(gh->p.term_str[3]);
+                gh->p.data.gll.seconds = 10 * CTN(gh->p.term_str[4]) + CTN(gh->p.term_str[5]);
                 break;
+            // case 6:                             /* Process valid status */
+                // gh->p.data.gll.is_valid = (gh->p.term_str[0] == 'A' || gh->p.term_str[0] == 'a');
+                // break;
             default:
                 break;
         }
